@@ -43,8 +43,6 @@ dataset <- read.table(datafile,
                       sep=';', stringsAsFactors=F, na.strings = '?',
                       skip=firstrow-1, nrows=lastrow-firstrow+1)
 
-## save(dataset,file='ds',ascii=T)
-
 
 # Extract the names we are interested in.
 # (unfortunately I can't read the first line then a chunk later
