@@ -6,7 +6,7 @@
 ## Email  : martinezm AT ociweb DOT com
 
 ##
-## plot1.R - Energy sub-metering
+## plot3.R - Energy sub-metering
 ##
 ## Plot: Energy sub-metering / datetime
 ##

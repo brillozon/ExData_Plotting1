@@ -6,7 +6,7 @@
 ## Email  : martinezm AT ociweb DOT com
 
 ##
-## plot1.R - Global Active Power
+## plot2.R - Global Active Power
 ##
 ## Plot: Global Active Power (kilowatts) / datetime
 ##

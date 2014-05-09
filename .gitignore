@@ -1,5 +1,6 @@
 *.swp
 data
+README.html
 .Rproj.user
 .RData
 .Rhistory
