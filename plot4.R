@@ -6,9 +6,13 @@
 ## Email  : martinezm AT ociweb DOT com
 
 ##
-## plot1.R - Global Active Power
+## plot4.R - Quad plot
 ##
-## Plot: Frequency / Global Active Power (kilowatts)
+## Plot (ul, ll, ur, lr):
+##   1) Global Active Power / datetime
+##   2) Energy sub metering / datetime
+##   3) Voltage / datetime
+##   4) Global reactive power / datetime
 ##
 ## This uses the dataset from the UC Irvine Machine Learning
 ## Repository (http://archive.ics.uci.edu/ml/)
@@ -19,7 +23,7 @@
 dataUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
 datasetFile <- "household_power_consumption.txt"
 zipFile <- "./data/epc.zip"
-plotFile <- 'plot1.png'
+plotFile <- 'plot4.png'
 
 # Ensure there is a directory to put the data in.
 if(!file.exists('data')) {
@@ -64,8 +68,42 @@ dataset$Date = as.Date(dataset$Date,"%d/%m/%Y")
 # Generate the plot to a constrained image file.
 png(filename=plotFile, width=480, height=480)
 
-hist(dataset$Global_active_power, col='red',
-     main='Global Active Power',
-     xlab='Global Active Power (kilowatts)')
+# Set a 2x2 grid of plots, drawn in column order.
+nf <- layout(matrix(c(1,2,3,4),2,2))
+layout.show(nf)
+
+# Upper left plot
+plot(dataset$datetime,
+     dataset$Global_active_power,
+     main='', xlab='', ylab='Global Active Power',
+     type='l')
+
+# Lower left plot
+plot(dataset$datetime,
+     dataset$Sub_metering_1,
+     main='', xlab='', ylab='Energy sub metering',
+     type='l',col='black')
+lines(dataset$datetime,
+      dataset$Sub_metering_2,
+      col='red')
+lines(dataset$datetime,
+      dataset$Sub_metering_3,
+      col='blue')
+legend('topright',
+       c('Sub_metering_1','Sub_metering_2','Sub_metering_3'),
+       col=c('black','red','blue'),lty=1,bty='n')
+
+# Upper right plot
+plot(dataset$datetime,
+     dataset$Voltage,
+     main='', xlab='datetime', ylab='Voltage',
+     type='l')
+
+# Lower right plot
+plot(dataset$datetime,
+     dataset$Global_reactive_power,
+     main='', xlab='datetime', ylab='Global_reactive_power',
+     type='l')
 
 dev.off()
+

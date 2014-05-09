@@ -8,7 +8,7 @@
 ##
 ## plot1.R - Global Active Power
 ##
-## Plot: Frequency / Global Active Power (kilowatts)
+## Plot: Global Active Power (kilowatts) / datetime
 ##
 ## This uses the dataset from the UC Irvine Machine Learning
 ## Repository (http://archive.ics.uci.edu/ml/)
@@ -18,7 +18,7 @@
 # Locations
 dataUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
 datasetFile <- "household_power_consumption.txt"
-localFile <- "./data/epc.zip"
+zipFile <- "./data/epc.zip"
 plotFile <- 'plot2.png'
 
 # Ensure there is a directory to put the data in.
@@ -27,8 +27,8 @@ if(!file.exists('data')) {
 }
 
 # Ensure we have the dataset file.
-if(!file.exists(localFile)) {
-  download.file(dataUrl, destfile = localFile, method = 'curl')
+if(!file.exists(zipFile)) {
+  download.file(dataUrl, destfile = zipFile, method = 'curl')
   epc_date <- date();
 }
 
@@ -38,8 +38,7 @@ firstrow <- 66638
 lastrow  <- 69517
 
 # Extract the data we are interested in.
-datafile <- unz(localFile, datasetFile)
-dataset <- read.table(datafile,
+dataset <- read.table(unz(zipFile, datasetFile),
                       sep=';', stringsAsFactors=F, na.strings = '?',
                       skip=firstrow-1, nrows=lastrow-firstrow+1)
 
@@ -47,24 +46,27 @@ dataset <- read.table(datafile,
 # Extract the names we are interested in.
 # (unfortunately I can't read the first line then a chunk later
 # in a single operation).
-datafile <- unz(localFile, datasetFile)
-datanames <- read.table(datafile,
+datanames <- read.table(unz(zipFile, datasetFile),
                         sep=';', stringsAsFactors=F, na.strings = '?',
                         nrows=1)
-names(dataset) = datanames
+names(dataset) <- datanames
 
+# Pre-pend the combined date/time column to the frame.
 dataset <- data.frame(
   datetime = strptime(paste(dataset$Date,
                             dataset$Time),
                       "%d/%m/%Y %H:%M:%S"),
   dataset)
 
+# Convert the Date column to Date() class.
 dataset$Date = as.Date(dataset$Date,"%d/%m/%Y")
 
-# Generate the plot.
+# Generate the plot to a constrained image file.
 png(filename=plotFile, width=480, height=480)
+
 plot(dataset$datetime,
      dataset$Global_active_power,
      main='', xlab='', ylab='Global Active Power (kilowatts)',
      type='l')
+
 dev.off()
