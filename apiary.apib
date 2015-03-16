@@ -1,0 +1,63 @@
+FORMAT: 1A
+
+# Itzamazing
+Itzamazing API is a *small maze* service similar to mazes in a cornfields.
+
+# Group Mazes
+Maze related resources of the **Itzamazing API**
+
+## Maze Collection [/mazes{?start}{?span}]
+Access one or more mazes in the maze collection
+
++ Parameters
+
+    + start = `1` (optional,number) ... Numeric `id` of the starting maze to return in the response.
+    
+    + span = `50` (optional,number) ... Number of maze values to return in the response.
+
+### List Mazes [GET]
++ Response 200 (application/prs.com.webmartinez.itzamazing+json)
+
+        [{
+          "id": 1, "title": "Topiary maze"
+        }, {
+          "id": 2, "title": "Cornfield maze"
+        }]
+
+## Maze Creation [/mazes]
+Create a new single maze
+
+### Create a Maze [POST]
++ Request (application/prs.com.webmartinez.itzamazing+json)
+
+        { "title": "Maze of questions" }
+
++ Response 201 (application/prs.com.webmartinez.itzamazing+json)
+
+    + Headers
+    
+            Location: /mazes/3
+
+    + Body
+    
+            { "id": 3, "title": "Maze of questions" }
+
+## Maze Retreival [/mazes/{id}]
+A single Maze object with all its details
+
++ Parameters
+    + id (required, number, `2`) ... Numeric `id` of the Maze to perform action with. Has example value.
+
+### Retrieve a Maze [GET]
++ Response 200 (application/prs.com.webmartinez.itzamazing+json)
+
+    + Header
+
+            X-Maze-Orientation: South-by-Southwest
+
+    + Body
+
+            { "id": 2, "title": "Cornfield maze" }
+
+### Remove a Maze [DELETE]
++ Response 204
